@@ -5,6 +5,8 @@ import Login from "./components/Login";
 import LandingPage from "./components/LandingPage";
 import Menu from "./components/Menu";
 import Messages from "./components/Messages";
+import Contacts from "./components/Contacts";
+import Settings from "./components/Settings";
 
 function App() {
   return (
@@ -20,6 +22,12 @@ function App() {
           </Route>
           <Route path="/messages">
             <Messages />
+          </Route>
+          <Route path="/contacts">
+            <Contacts />
+          </Route>
+          <Route path="/settings">
+            <Settings />
           </Route>
         </Switch>
       </Router>

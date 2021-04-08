@@ -44,6 +44,8 @@ code {
 /* Color/shape of close button cross */
 .bm-cross {
   background: #bdc3c7;
+  text-decoration: none;
+  outline: none;
 }
 
 /*
@@ -89,4 +91,15 @@ Note: Beware of modifying this element as it can break the animations - you shou
 /* Styling of overlay */
 .bm-overlay {
   background: rgba(0, 0, 0, 0.3);
+}
+
+.bm-menu a {
+  text-decoration: none;
+  outline: none;
+}
+
+#react-burger-cross-btn,
+#react-burger-menu-btn {
+  text-decoration: none;
+  outline: none;
 }

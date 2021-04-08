@@ -4,11 +4,14 @@ import screens from "./screenSizes";
 
 const screenSizes: readonly string[] = ["xs", "sm", "md", "lg", "xl", "2xl"];
 
-// enum ScreenSizes {
-//   XS = 0,
-//   SM = 1,
-//   //   ...
-// }
+enum ScreenSizes {
+  XS = 0,
+  SM = 1,
+  MD = 2,
+  LG = 3,
+  XL = 4,
+  "2XL" = 5,
+}
 
 function getScreenSize() {
   for (let screenSize of screenSizes) {
@@ -46,7 +49,7 @@ const Menu: React.FC<{}> = () => {
   return (
     <>
       {screenSize === "xs" || screenSize === "sm" ? (
-        <MenuDetails right className="">
+        <MenuDetails right className="bm-menu">
           <a id="home" className="menu-item" href="/">
             Home
           </a>
@@ -68,7 +71,9 @@ const Menu: React.FC<{}> = () => {
             Sign Out
           </a>
         </MenuDetails>
-      ) : null}
+      ) : (
+        <p>I am a bigger menu :)</p>
+      )}
     </>
   );
 };
