@@ -10,28 +10,30 @@ import Settings from "./components/Settings";
 
 function App() {
   return (
-    <>
-      <Menu />
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <LandingPage />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/messages">
-            <Messages />
-          </Route>
-          <Route path="/contacts">
-            <Contacts />
-          </Route>
-          <Route path="/settings">
-            <Settings />
-          </Route>
-        </Switch>
-      </Router>
-    </>
+    <div>
+      <div className="container mx-auto sm:bg-white sm:bg-opacity-60 sm:mt-24  relative sm:px-4 sm:py-10 sm:shadow-lg sm:rounded-3xl sm:p-20 sm:bg-clip-padding sm:bg-opacity-60 sm:border sm:border-gray-300">
+        <Menu />
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <LandingPage />
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/messages">
+              <Messages />
+            </Route>
+            <Route path="/contacts">
+              <Contacts />
+            </Route>
+            <Route path="/settings">
+              <Settings />
+            </Route>
+          </Switch>
+        </Router>
+      </div>
+    </div>
   );
 }
 

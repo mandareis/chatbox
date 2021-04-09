@@ -1,41 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { slide as MenuDetails } from "react-burger-menu";
-import screens from "./screenSizes";
+import useScreenSize from "./useScreenSize";
 
-const screenSizes: readonly string[] = ["xs", "sm", "md", "lg", "xl", "2xl"];
-
-enum ScreenSizes {
-  XS = 0,
-  SM = 1,
-  MD = 2,
-  LG = 3,
-  XL = 4,
-  "2XL" = 5,
-}
-
-function getScreenSize() {
-  for (let screenSize of screenSizes) {
-    if (matchMedia(`(max-width: ${(screens as any)[screenSize]})`).matches) {
-      return screenSize;
-    }
-  }
-  return "mega";
-}
-
-const useScreenSize = () => {
-  const [screenSize, setScreenSize] = useState(getScreenSize());
-  useEffect(() => {
-    // set up "screen resized" event listener
-    const handleResize = () => {
-      setScreenSize(getScreenSize());
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-  return screenSize;
-};
+const sharedMenuItems: readonly any[] = [
+  {
+    href: "/",
+    id: "home",
+    text: "Home",
+  },
+  {
+    href: "/messages",
+    id: "messages",
+    text: "Messages",
+  },
+  {
+    href: "/contacts",
+    id: "contacts",
+    text: "Contacts",
+  },
+  {
+    href: "/settings",
+    id: "settings",
+    text: "Settings",
+  },
+];
 
 const Menu: React.FC<{}> = () => {
   const screenSize = useScreenSize();
@@ -43,36 +31,37 @@ const Menu: React.FC<{}> = () => {
     console.log(`screen size is now: ${screenSize}`);
   }, [screenSize]);
 
-  //   if (screenSize > ScreenSizes.SM) {
-
-  //   }
   return (
     <>
       {screenSize === "xs" || screenSize === "sm" ? (
         <MenuDetails right className="bm-menu">
-          <a id="home" className="menu-item" href="/">
-            Home
-          </a>
-          <a id="messages" className="menu-item" href="/messages">
-            Messages
-          </a>
-          <a id="contacts" className="menu-item" href="/contacts">
-            Contacts
-          </a>
-          <a
-            // onClick={(event) => showSettings(event)}
-            id="settings"
-            className="menu-item--small"
-            href="/settings"
-          >
-            Settings
-          </a>
+          {sharedMenuItems.map((item, idx) => (
+            <a key={idx} id={item.id} className="menu-item" href={item.href}>
+              {item.text}
+            </a>
+          ))}
           <a id="sign-out" className="menu-item" href="/sign-out">
             Sign Out
           </a>
         </MenuDetails>
       ) : (
-        <p>I am a bigger menu :)</p>
+        <div className="grid grid-cols-2">
+          <div className=" font-bold space-x-4 flex justify-center">
+            {sharedMenuItems.map((item, idx) => (
+              <a key={idx} id={`${item.id}-full`} href={item.href}>
+                {item.text}
+              </a>
+            ))}
+          </div>
+          <div className="font-bold space-x-4 flex justify-center">
+            <a id="login-full" className="menu-item" href="/login">
+              Login
+            </a>
+            <a id="sign-out-full" className="menu-item" href="/sign-out">
+              Sign Out
+            </a>
+          </div>
+        </div>
       )}
     </>
   );
