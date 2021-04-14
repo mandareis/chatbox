@@ -15,21 +15,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const email_validator_1 = __importDefault(require("email-validator"));
 const database_1 = require("./database");
+const cookie_session_1 = __importDefault(require("cookie-session"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const db = new database_1.InMemoryDatabase();
 const app = express_1.default();
+app.set("trust proxy", 1);
+app.use(cookie_session_1.default({
+    name: "session",
+    keys: ["b2cc1685-6c47-4faf-8cf3-e6aed3c04e0"],
+    maxAge: 48 * 60 * 60 * 1000, // 48 hours
+}));
+app.use((req, res, next) => {
+    if (req.session && !req.session.started) {
+        req.session.started = new Date().toISOString();
+    }
+    next();
+});
 app.use(express_1.default.json());
-const port = 3000;
+const PORT = process.env.PORT || 3001;
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
 function apiError(res, message, status) {
     res.set("Content-Type", "application/json");
-    res.json({
+    res.status(status).json({
         status: "error",
         message,
     });
-    res.status(status);
 }
 app.post("/api/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -46,7 +58,8 @@ app.post("/api/login", (req, res) => __awaiter(void 0, void 0, void 0, function*
             apiError(res, "Invalid credentials", 400);
             return;
         }
-        res.json({ status: "ok" });
+        delete user.bcrypt_password;
+        res.json({ status: "ok", user });
     }
     catch (e) {
         console.error(`unknown failure occured: ${e.message}`);
@@ -126,13 +139,7 @@ app.post("/api/users", (req, res) => __awaiter(void 0, void 0, void 0, function*
 //   }
 // });
 // app.delete("/client/api/users/:id");
-app.listen(port, () => {
-    return console.log(`server is listening on ${port}`);
+app.listen(PORT, () => {
+    return console.log(`server is listening on ${PORT}`);
 });
-// function checkLogin(user: User, providedPassword: string): boolean {
-//   if (password_is_correct(providedPassword)) {
-//     return true;
-//   }
-//   return false;
-// }
 //# sourceMappingURL=app.js.map

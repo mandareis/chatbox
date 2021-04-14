@@ -7,6 +7,7 @@ import Menu from "./components/Menu";
 import Messages from "./components/Messages";
 import Contacts from "./components/Contacts";
 import Settings from "./components/Settings";
+import Register from "./components/Register";
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
             </Route>
             <Route path="/login">
               <Login />
+            </Route>
+            <Route path="/register">
+              <Register />
             </Route>
             <Route path="/messages">
               <Messages />

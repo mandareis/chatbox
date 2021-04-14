@@ -1,24 +1,39 @@
 import express from "express";
 import validateEmail from "email-validator";
 import { User, Database, InMemoryDatabase } from "./database";
+import cookieSession from "cookie-session";
 import bcrypt from "bcrypt";
 
 const db: Database = new InMemoryDatabase();
 
 const app = express();
+app.set("trust proxy", 1);
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["b2cc1685-6c47-4faf-8cf3-e6aed3c04e0"],
+    maxAge: 48 * 60 * 60 * 1000, // 48 hours
+  })
+);
+app.use((req, res, next) => {
+  if (req.session && !req.session.started) {
+    req.session.started = new Date().toISOString();
+  }
+  next();
+});
 app.use(express.json());
-const port = 3000;
+const PORT = process.env.PORT || 3001;
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
 function apiError(res: express.Response, message: string, status: number) {
   res.set("Content-Type", "application/json");
-  res.json({
+  res.status(status).json({
     status: "error",
     message,
   });
-  res.status(status);
 }
 
 app.post("/api/login", async (req, res) => {
@@ -36,7 +51,8 @@ app.post("/api/login", async (req, res) => {
       apiError(res, "Invalid credentials", 400);
       return;
     }
-    res.json({ status: "ok" });
+    delete (user as any).bcrypt_password;
+    res.json({ status: "ok", user });
   } catch (e) {
     console.error(`unknown failure occured: ${e.message}`);
     apiError(res, "Internal server error", 500);
@@ -56,7 +72,6 @@ app.get("/api/users/:id", async (req, res) => {
       apiError(res, "Unknown user", 404);
       return;
     }
-
     // never reveal password hashes over the API
     delete (user as any).bcrypt_password;
     res.json(user);
@@ -65,6 +80,7 @@ app.get("/api/users/:id", async (req, res) => {
     apiError(res, "Internal server error", 500);
   }
 });
+
 app.post("/api/users", async (req, res) => {
   try {
     console.log(req.body);
@@ -123,13 +139,7 @@ app.post("/api/users", async (req, res) => {
 //   }
 // });
 // app.delete("/client/api/users/:id");
-app.listen(port, () => {
-  return console.log(`server is listening on ${port}`);
-});
 
-// function checkLogin(user: User, providedPassword: string): boolean {
-//   if (password_is_correct(providedPassword)) {
-//     return true;
-//   }
-//   return false;
-// }
+app.listen(PORT, () => {
+  return console.log(`server is listening on ${PORT}`);
+});

@@ -26,7 +26,7 @@ class InMemoryDatabase {
         return __awaiter(this, void 0, void 0, function* () {
             for (let u of this.users) {
                 if (u.email === email) {
-                    return u;
+                    return Object.assign({}, u);
                 }
             }
             return null;
@@ -36,7 +36,7 @@ class InMemoryDatabase {
         return __awaiter(this, void 0, void 0, function* () {
             for (let u of this.users) {
                 if (u.id === id) {
-                    return u;
+                    return Object.assign({}, u);
                 }
             }
             return null;

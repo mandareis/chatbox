@@ -32,7 +32,7 @@ export class InMemoryDatabase implements Database {
   async getUserByEmail(email: string): Promise<User | null> {
     for (let u of this.users) {
       if (u.email === email) {
-        return u;
+        return { ...u };
       }
     }
     return null;
@@ -41,7 +41,7 @@ export class InMemoryDatabase implements Database {
   async getUserByID(id: string): Promise<User | null> {
     for (let u of this.users) {
       if (u.id === id) {
-        return u;
+        return { ...u };
       }
     }
     return null;

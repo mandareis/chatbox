@@ -57,6 +57,9 @@ const Menu: React.FC<{}> = () => {
             <a id="login-full" className="menu-item" href="/login">
               Login
             </a>
+            <a id="register-full" className="menu-item" href="/register">
+              Register
+            </a>
             <a id="sign-out-full" className="menu-item" href="/sign-out">
               Sign Out
             </a>
