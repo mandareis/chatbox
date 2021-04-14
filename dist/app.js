@@ -36,13 +36,21 @@ const PORT = process.env.PORT || 3001;
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
-function apiError(res, message, status) {
-    res.set("Content-Type", "application/json");
-    res.status(status).json({
-        status: "error",
-        message,
-    });
-}
+app.get("/_bootstrap.js", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.set("content-type", "text/javascript");
+    // load the user from the database done
+    // dont forget to clear bcrypt_password! maybe?
+    // pass into stringify done
+    // use a <script> tag to import this in the HTML
+    // use _boostrap_data as initial state in the userSlice
+    let user = null;
+    if (req.session && req.session.user_id) {
+        user = yield db.getUserByID(req.session.user_id);
+        delete user.bcrypt_password;
+    }
+    // if user is not logged in send in null.
+    res.send(`window._bootstrap_data = JSON.parse('${JSON.stringify(user)}')`);
+}));
 app.post("/api/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log(req.body);
@@ -59,6 +67,10 @@ app.post("/api/login", (req, res) => __awaiter(void 0, void 0, void 0, function*
             return;
         }
         delete user.bcrypt_password;
+        if (!req.session) {
+            throw new Error("no session available!");
+        }
+        req.session.user_id = user.id; // log the user in
         res.json({ status: "ok", user });
     }
     catch (e) {
@@ -66,6 +78,13 @@ app.post("/api/login", (req, res) => __awaiter(void 0, void 0, void 0, function*
         apiError(res, "Internal server error", 500);
     }
 }));
+function apiError(res, message, status) {
+    res.set("Content-Type", "application/json");
+    res.status(status).json({
+        status: "error",
+        message,
+    });
+}
 // GET /users — index/listing
 // POST /users — create
 // GET /users/{user_id} — read

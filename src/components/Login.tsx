@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-
 import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { selectUser, setUser, User } from "../store/userSlice";
 
@@ -24,7 +23,7 @@ const Login: React.FC<{}> = () => {
       body: JSON.stringify({ email, password }),
     });
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     if (!response.ok) {
       let message = "Password or Username incorrect. Please try again.";
       if (data.error) {
@@ -33,8 +32,12 @@ const Login: React.FC<{}> = () => {
       setErrMessage(message);
       return;
     }
-
-    dispatch(setUser(data.user as User));
+    if (data.user) {
+      dispatch(setUser(data.user as User));
+      console.log(data.user);
+      history.push("/");
+    }
+    console.log(`Hello, ${data.user.name}`);
   };
   return (
     <div>

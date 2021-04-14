@@ -1,6 +1,6 @@
 import express from "express";
 import validateEmail from "email-validator";
-import { User, Database, InMemoryDatabase } from "./database";
+import { Database, InMemoryDatabase } from "./database";
 import cookieSession from "cookie-session";
 import bcrypt from "bcrypt";
 
@@ -28,14 +28,25 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-function apiError(res: express.Response, message: string, status: number) {
-  res.set("Content-Type", "application/json");
-  res.status(status).json({
-    status: "error",
-    message,
-  });
-}
+//sets user to "_bootstrap_data" if user_id is in session
+app.get("/_bootstrap.js", async (req, res) => {
+  res.set("content-type", "text/javascript");
+  // load the user from the database done
+  // dont forget to clear bcrypt_password! maybe?
+  // pass into stringify done
+  // use a <script> tag to import this in the HTML
+  // use _boostrap_data as initial state in the userSlice
+  let user = null;
+  if (req.session && req.session.user_id) {
+    user = await db.getUserByID(req.session.user_id);
+    delete (user as any).bcrypt_password;
+  }
 
+  // if user is not logged in send in null.
+  res.send(`window._bootstrap_data = JSON.parse('${JSON.stringify(user)}')`);
+});
+
+// logs user in over fetch & checks to validate credentials
 app.post("/api/login", async (req, res) => {
   try {
     console.log(req.body);
@@ -52,12 +63,26 @@ app.post("/api/login", async (req, res) => {
       return;
     }
     delete (user as any).bcrypt_password;
+    //would only happen if cookie session was not added
+    if (!req.session) {
+      throw new Error("no session available!");
+    }
+    req.session.user_id = user.id; // log the user in
     res.json({ status: "ok", user });
   } catch (e) {
     console.error(`unknown failure occured: ${e.message}`);
     apiError(res, "Internal server error", 500);
   }
 });
+
+//sets response format of errors in API
+function apiError(res: express.Response, message: string, status: number) {
+  res.set("Content-Type", "application/json");
+  res.status(status).json({
+    status: "error",
+    message,
+  });
+}
 
 // GET /users — index/listing
 // POST /users — create
