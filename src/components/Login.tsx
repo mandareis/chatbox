@@ -24,7 +24,6 @@ const Login: React.FC<{}> = () => {
       body: JSON.stringify({ email, password }),
     });
     const data = await response.json();
-    // console.log(data);
     if (!response.ok) {
       let message = "Password or Username incorrect. Please try again.";
       if (data.error) {

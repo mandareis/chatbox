@@ -87,7 +87,8 @@ Note: Beware of modifying this element as it can break the animations - you shou
 }
 
 #react-burger-cross-btn,
-#react-burger-menu-btn {
+#react-burger-menu-btn,
+#sign-out-full {
   text-decoration: none;
   outline: none;
 }

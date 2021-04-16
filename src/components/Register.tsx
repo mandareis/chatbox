@@ -1,7 +1,14 @@
 import React, { useState } from "react";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
 
-const RegisterFormInput = (props: any) => {
+const RegisterFormInput: React.FC<{
+  icon: string;
+  value: any;
+  type: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder: string;
+}> = (props) => {
   return (
     <div className="register-form">
       <div className="input-prefix-icon">
@@ -14,14 +21,11 @@ const RegisterFormInput = (props: any) => {
           onChange={props.onChange}
           autoComplete="off"
           placeholder={props.placeholder}
-          required={props.required}
+          required
         />
       </div>
     </div>
   );
-};
-const handlesRegister = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
 };
 const Register: React.FC<{}> = () => {
   const [name, setName] = useState("");
@@ -29,6 +33,10 @@ const Register: React.FC<{}> = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [password_confirmation, setPasswordConfirmation] = useState("");
+
+  const handlesRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
 
   return (
     <form className="register-input-container" onSubmit={handlesRegister}>
@@ -39,45 +47,35 @@ const Register: React.FC<{}> = () => {
         icon="fa-user"
         placeholder="Name"
         value={name}
-        name="name"
-        // onChange={(e ) => setName(e.target.value)}
-        required="required"
+        onChange={(e) => setName(e.target.value)}
       />
       <RegisterFormInput
         type="text"
         icon="fa-user"
         placeholder="Username"
-        name="username"
         value={username}
-        // onChange={(e) => setUsername(e.target.value)}
-        required="required"
+        onChange={(e) => setUsername(e.target.value)}
       />
       <RegisterFormInput
         type="text"
         icon="fa-at"
         placeholder="Email"
-        name="email"
         value={email}
-        // onChange={(e: any) => setEmail(e.target.value)}
-        required="required"
+        onChange={(e) => setEmail(e.target.value)}
       />
       <RegisterFormInput
         type="password"
         icon="fa-lock"
         placeholder="Password"
-        name="password"
         value={password}
-        // onChange={(e) => setPassword(e.target.value)}
-        required="required"
+        onChange={(e) => setPassword(e.target.value)}
       />
       <RegisterFormInput
         type="password"
         icon="fa-lock"
-        name="password_confirmation"
         placeholder="Confirm Password"
         value={password_confirmation}
-        // onChange={(e) => setPasswordConfirmation(e.target.value)}
-        required="required"
+        onChange={(e) => setPasswordConfirmation(e.target.value)}
       />
       <h5>
         Already have an account?
@@ -86,4 +84,4 @@ const Register: React.FC<{}> = () => {
     </form>
   );
 };
-export default Register;
+export default connect()(Register);
