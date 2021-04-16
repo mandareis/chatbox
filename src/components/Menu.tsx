@@ -1,6 +1,10 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect } from "react";
 import { slide as MenuDetails } from "react-burger-menu";
 import useScreenSize from "./useScreenSize";
+import { useAppDispatch } from "../store/hooks";
+import { logout } from "../store/userSlice";
+import { connect } from "react-redux";
 
 const sharedMenuItems: readonly any[] = [
   {
@@ -26,7 +30,19 @@ const sharedMenuItems: readonly any[] = [
 ];
 
 const Menu: React.FC<{}> = () => {
+  const dispatch = useAppDispatch();
   const screenSize = useScreenSize();
+
+  const handlesLogOut = async () => {
+    const response = await fetch("/api/session", {
+      method: "DELETE",
+    });
+    console.log(response);
+    if (response.ok) {
+      dispatch(logout());
+    }
+  };
+
   useEffect(() => {
     console.log(`screen size is now: ${screenSize}`);
   }, [screenSize]);
@@ -46,7 +62,7 @@ const Menu: React.FC<{}> = () => {
         </MenuDetails>
       ) : (
         <div className="grid grid-cols-2">
-          <div className=" font-bold space-x-4 flex justify-center">
+          <div className="font-bold space-x-4 flex justify-center">
             {sharedMenuItems.map((item, idx) => (
               <a key={idx} id={`${item.id}-full`} href={item.href}>
                 {item.text}
@@ -60,9 +76,14 @@ const Menu: React.FC<{}> = () => {
             <a id="register-full" className="menu-item" href="/register">
               Register
             </a>
-            <a id="sign-out-full" className="menu-item" href="/sign-out">
+            <button
+              type="submit"
+              id="sign-out-full"
+              className="menu-item font-bold"
+              onClick={handlesLogOut}
+            >
               Sign Out
-            </a>
+            </button>
           </div>
         </div>
       )}
@@ -70,4 +91,4 @@ const Menu: React.FC<{}> = () => {
   );
 };
 
-export default Menu;
+export default connect()(Menu);

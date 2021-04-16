@@ -75,6 +75,10 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
+app.delete("/api/session", async (req, res) => {
+  req.session = null;
+  res.json({ status: "ok" });
+});
 //sets response format of errors in API
 function apiError(res: express.Response, message: string, status: number) {
   res.set("Content-Type", "application/json");

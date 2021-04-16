@@ -36,6 +36,7 @@ const PORT = process.env.PORT || 3001;
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
+//sets user to "_bootstrap_data" if user_id is in session
 app.get("/_bootstrap.js", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.set("content-type", "text/javascript");
     // load the user from the database done
@@ -51,6 +52,7 @@ app.get("/_bootstrap.js", (req, res) => __awaiter(void 0, void 0, void 0, functi
     // if user is not logged in send in null.
     res.send(`window._bootstrap_data = JSON.parse('${JSON.stringify(user)}')`);
 }));
+// logs user in over fetch & checks to validate credentials
 app.post("/api/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log(req.body);
@@ -67,6 +69,7 @@ app.post("/api/login", (req, res) => __awaiter(void 0, void 0, void 0, function*
             return;
         }
         delete user.bcrypt_password;
+        //would only happen if cookie session was not added
         if (!req.session) {
             throw new Error("no session available!");
         }
@@ -78,6 +81,11 @@ app.post("/api/login", (req, res) => __awaiter(void 0, void 0, void 0, function*
         apiError(res, "Internal server error", 500);
     }
 }));
+app.delete("/api/session", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    req.session = null;
+    res.json({ status: "ok" });
+}));
+//sets response format of errors in API
 function apiError(res, message, status) {
     res.set("Content-Type", "application/json");
     res.status(status).json({

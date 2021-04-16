@@ -21,12 +21,13 @@ function getScrnSizes() {
   }
   return "mega";
 }
-//   if (screenSize > ScreenSizes.SM) {
+// if (screenSize > ScreenSizes.SM) {
 
-//   }
+// }
 
 const useScreenSize = () => {
   const [screenSize, setScreenSize] = useState(getScrnSizes());
+
   useEffect(() => {
     // set up "screen resized" event listener
     const handleResize = () => {

@@ -8,6 +8,9 @@ import Messages from "./components/Messages";
 import Contacts from "./components/Contacts";
 import Settings from "./components/Settings";
 import Register from "./components/Register";
+import NotFound from "./components/NotFound";
+import LoggedOutRoute from "./components/LoggedOutRoute";
+import LoggedInRoute from "./components/LoggedInRoute";
 
 function App() {
   return (
@@ -16,24 +19,18 @@ function App() {
         <Menu />
         <Router>
           <Switch>
-            <Route exact path="/">
-              <LandingPage />
-            </Route>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/register">
-              <Register />
-            </Route>
-            <Route path="/messages">
-              <Messages />
-            </Route>
-            <Route path="/contacts">
-              <Contacts />
-            </Route>
-            <Route path="/settings">
-              <Settings />
-            </Route>
+            <LoggedOutRoute path="/" exact={true} component={LandingPage} />
+            <LoggedOutRoute
+              path="/register"
+              exact={true}
+              component={Register}
+            />
+            <LoggedOutRoute path="/login" exact={true} component={Login} />
+            {/* <LoggedInRoute path="/log-out" exact={true} component={LogOut} /> */}
+            <LoggedInRoute path="/messages" exact={true} component={Messages} />
+            <LoggedInRoute path="/contacts" exact={true} component={Contacts} />
+            <LoggedInRoute path="/settings" exact={true} component={Settings} />
+            <Route component={NotFound} />
           </Switch>
         </Router>
       </div>

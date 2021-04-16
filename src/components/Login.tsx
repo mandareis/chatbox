@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { selectUser, setUser, User } from "../store/userSlice";
+import { connect } from "react-redux";
 
 const Login: React.FC<{}> = () => {
   const user = useAppSelector(selectUser);
@@ -9,7 +10,7 @@ const Login: React.FC<{}> = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMessage, setErrMessage] = useState("");
-  let history = useHistory();
+  const history = useHistory();
 
   const handlesLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,7 +35,6 @@ const Login: React.FC<{}> = () => {
     }
     if (data.user) {
       dispatch(setUser(data.user as User));
-      console.log(data.user);
       history.push("/");
     }
     console.log(`Hello, ${data.user.name}`);
@@ -62,4 +62,4 @@ const Login: React.FC<{}> = () => {
   );
 };
 
-export default Login;
+export default connect()(Login);
