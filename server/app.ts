@@ -75,6 +75,7 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
+//logs user out by deleting session
 app.delete("/api/session", async (req, res) => {
   req.session = null;
   res.json({ status: "ok" });

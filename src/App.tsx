@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import "./index.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./components/Login";
@@ -26,7 +26,6 @@ function App() {
               component={Register}
             />
             <LoggedOutRoute path="/login" exact={true} component={Login} />
-            {/* <LoggedInRoute path="/log-out" exact={true} component={LogOut} /> */}
             <LoggedInRoute path="/messages" exact={true} component={Messages} />
             <LoggedInRoute path="/contacts" exact={true} component={Contacts} />
             <LoggedInRoute path="/settings" exact={true} component={Settings} />
@@ -39,3 +38,7 @@ function App() {
 }
 
 export default App;
+
+{
+  /* <LoggedInRoute path="/log-out" exact={true} component={LogOut} /> */
+}
