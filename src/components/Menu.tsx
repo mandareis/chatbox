@@ -80,6 +80,7 @@ const Menu: React.FC<{}> = () => {
               )
             )}
           </div>
+
           <div className="font-bold space-x-4 flex justify-center">
             <a id="login-full" className="menu-item" href="/login">
               Login
