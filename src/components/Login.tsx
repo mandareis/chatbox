@@ -39,23 +39,36 @@ const Login: React.FC<{}> = () => {
     console.log(`Hello, ${data.user.name}`);
   };
   return (
-    <div>
+    <div className="flow-root flex justify-center">
       {user?.email}
       <form onSubmit={handlesLogin}>
         <p>{errMessage}</p>
-        <input
-          type="text"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Go</button>
+        <div className="my-3">
+          <input
+            type="text"
+            placeholder="Email"
+            className="border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-gray-600 focus:placeholder-gray-400 px-2 rounded-md"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="my-3">
+          <input
+            type="password"
+            placeholder="Password"
+            className="border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent placeholder-gray-600 focus:placeholder-gray-400 px-2 rounded-md"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <div className="">
+            <button
+              type="submit"
+              className="my-2 border-2 border-purple-500 hover:border-gray-500  ring-opacity-50 rounded-md text-sm w-12 py-1 focus:outline-none rounded-md"
+            >
+              Go
+            </button>
+          </div>
+        </div>
       </form>
     </div>
   );

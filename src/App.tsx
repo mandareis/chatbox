@@ -11,11 +11,13 @@ import Register from "./components/Register";
 import NotFound from "./components/NotFound";
 import LoggedOutRoute from "./components/LoggedOutRoute";
 import LoggedInRoute from "./components/LoggedInRoute";
+import MobileMenu from "./components/MobileMenu";
 
 function App() {
   return (
     <div>
-      <div className="container mx-auto sm:bg-white sm:bg-opacity-60 sm:mt-24  relative sm:px-4 sm:py-10 sm:shadow-lg sm:rounded-3xl sm:p-20 sm:bg-clip-padding sm:bg-opacity-60 sm:border sm:border-gray-300">
+      <MobileMenu />
+      <div className="container mx-auto sm:bg-white sm:bg-opacity-60 sm:mt-24 relative sm:px-4 sm:py-10 sm:shadow-lg sm:rounded-3xl sm:p-20 sm:bg-clip-padding sm:bg-opacity-60 sm:border sm:border-gray-300">
         <Menu />
         <Router>
           <Switch>
@@ -38,7 +40,3 @@ function App() {
 }
 
 export default App;
-
-{
-  /* <LoggedInRoute path="/log-out" exact={true} component={LogOut} /> */
-}

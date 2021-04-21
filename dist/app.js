@@ -81,6 +81,7 @@ app.post("/api/login", (req, res) => __awaiter(void 0, void 0, void 0, function*
         apiError(res, "Internal server error", 500);
     }
 }));
+//logs user out by deleting session
 app.delete("/api/session", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     req.session = null;
     res.json({ status: "ok" });

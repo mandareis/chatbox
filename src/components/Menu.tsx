@@ -1,36 +1,53 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect } from "react";
-import { slide as MenuDetails } from "react-burger-menu";
-import useScreenSize from "./useScreenSize";
+import useScreenSize, { ScreenSize } from "./useScreenSize";
 import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { logout } from "../store/userSlice";
 import { connect } from "react-redux";
 import { selectUser } from "../store/userSlice";
 
-const sharedMenuItems: readonly any[] = [
+export const sharedMenuItems: readonly any[] = [
   {
     href: "/",
     id: "home",
     text: "Home",
     requiresAuth: false,
+    LoggedIn: false,
   },
   {
     href: "/messages",
     id: "messages",
     text: "Messages",
     requiresAuth: true,
+    LoggedIn: false,
   },
   {
     href: "/contacts",
     id: "contacts",
     text: "Contacts",
     requiresAuth: true,
+    LoggedIn: false,
   },
   {
     href: "/settings",
     id: "settings",
     text: "Settings",
     requiresAuth: true,
+    LoggedIn: false,
+  },
+  {
+    href: "/login",
+    id: "login",
+    text: "Login",
+    requiresAuth: false,
+    LoggedIn: true,
+  },
+  {
+    href: "/register",
+    id: "register",
+    text: "Register",
+    requiresAuth: false,
+    LoggedIn: true,
   },
 ];
 
@@ -54,22 +71,7 @@ const Menu: React.FC<{}> = () => {
 
   return (
     <>
-      {screenSize === "xs" || screenSize === "sm" ? (
-        <MenuDetails right className="bm-menu">
-          {sharedMenuItems.map((item, idx) => (
-            <a key={idx} id={item.id} className="menu-item" href={item.href}>
-              {item.text}
-            </a>
-          ))}
-          <button
-            id="sign-out-full"
-            className="menu-item"
-            onClick={handlesLogOut}
-          >
-            Sign Out
-          </button>
-        </MenuDetails>
-      ) : (
+      {screenSize > ScreenSize.SM ? (
         <div className="grid grid-cols-2">
           <div className="font-bold space-x-4 flex justify-center">
             {sharedMenuItems.map((item, idx) =>
@@ -80,14 +82,7 @@ const Menu: React.FC<{}> = () => {
               )
             )}
           </div>
-
-          <div className="font-bold space-x-4 flex justify-center">
-            <a id="login-full" className="menu-item" href="/login">
-              Login
-            </a>
-            <a id="register-full" className="menu-item" href="/register">
-              Register
-            </a>
+          {!user ? null : (
             <button
               type="submit"
               id="sign-out-full"
@@ -96,11 +91,10 @@ const Menu: React.FC<{}> = () => {
             >
               Sign Out
             </button>
-          </div>
+          )}
         </div>
-      )}
+      ) : null}
     </>
   );
 };
-
 export default connect()(Menu);

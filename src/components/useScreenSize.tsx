@@ -1,29 +1,38 @@
 import React, { useState, useEffect } from "react";
 import screens from "./screenSizes";
 
+export enum ScreenSize {
+  XS = 0,
+  SM = 1,
+  MD = 2,
+  LG = 3,
+  XL = 4,
+  TWOXL = 5,
+  MEGA = 6,
+}
+
+// screenSizes is an array of the keys in `screens` so we can be
+// ABSOLUTELY SURE the order in which we iterate over the `screens`
+// object
 const screenSizes: readonly string[] = ["xs", "sm", "md", "lg", "xl", "2xl"];
 
-// enum ScreenSizes {
-//   XS = 0,
-//   SM = 1,
-//   MD = 2,
-//   LG = 3,
-//   XL = 4,
-//   TWOXL = 5,
-//   MEGA = 6,
-// }
+const enumMapping: { [k: string]: ScreenSize } = Object.freeze({
+  xs: ScreenSize.XS,
+  sm: ScreenSize.SM,
+  md: ScreenSize.MD,
+  lg: ScreenSize.LG,
+  xl: ScreenSize.XL,
+  "2xl": ScreenSize.TWOXL,
+});
 
-function getScrnSizes() {
+function getScrnSizes(): ScreenSize {
   for (let screenSize of screenSizes) {
     if (matchMedia(`(max-width: ${(screens as any)[screenSize]})`).matches) {
-      return screenSize;
+      return enumMapping[screenSize];
     }
   }
-  return "mega";
+  return ScreenSize.MEGA;
 }
-// if (screenSize > ScreenSizes.SM) {
-
-// }
 
 const useScreenSize = () => {
   const [screenSize, setScreenSize] = useState(getScrnSizes());
