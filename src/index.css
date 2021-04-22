@@ -65,7 +65,9 @@ Note: Beware of modifying this element as it can break the animations - you shou
 #messages:hover,
 #contacts:hover,
 #settings:hover,
-#sign-out:hover {
+#sign-out:hover,
+#login:hover,
+#register:hover {
   color: hsl(55, 7%, 90%);
 }
 /* Individual item */
@@ -75,11 +77,11 @@ Note: Beware of modifying this element as it can break the animations - you shou
 }
 
 /* Styling of overlay */
-/* .bm-overlay {
+.bm-overlay {
   background: rgba(0, 0, 0, 0.3);
   height: 100%;
   width: 100%;
-} */
+}
 
 .bm-menu a {
   text-decoration: none;

@@ -1,16 +1,15 @@
 import React from "react";
 import { useAppSelector } from "../store/hooks";
 import { selectUser } from "../store/userSlice";
-import useScreenSize from "./useScreenSize";
+// import useScreenSize from "./useScreenSize";
 
 const LandingPage: React.FC<{}> = () => {
   const user = useAppSelector(selectUser);
-  const screenSize = useScreenSize();
-
+  // const screenSize = useScreenSize();
   return (
     <>
       <div
-        className="container mx-auto mt-24"
+        className="container mx-auto "
         style={{ backdropFilter: "blur(15px)" }}
       >
         {user ? `Hello, ${user.name}` : null}

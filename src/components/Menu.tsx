@@ -1,55 +1,64 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect } from "react";
 import useScreenSize, { ScreenSize } from "./useScreenSize";
 import { useAppSelector, useAppDispatch } from "../store/hooks";
-import { logout } from "../store/userSlice";
+import { logout, User } from "../store/userSlice";
 import { connect } from "react-redux";
 import { selectUser } from "../store/userSlice";
+
+const SHOW_LOGGED_IN = 1;
+const SHOW_ANY = 2;
+const SHOW_LOGGED_OUT = 3;
 
 export const sharedMenuItems: readonly any[] = [
   {
     href: "/",
     id: "home",
     text: "Home",
-    requiresAuth: false,
-    LoggedIn: false,
+    showSetting: SHOW_ANY,
   },
   {
     href: "/messages",
     id: "messages",
     text: "Messages",
-    requiresAuth: true,
-    LoggedIn: false,
+    showSetting: SHOW_LOGGED_IN,
   },
   {
     href: "/contacts",
     id: "contacts",
     text: "Contacts",
-    requiresAuth: true,
-    LoggedIn: false,
+    showSetting: SHOW_LOGGED_IN,
   },
   {
     href: "/settings",
     id: "settings",
     text: "Settings",
-    requiresAuth: true,
-    LoggedIn: false,
+    showSetting: SHOW_LOGGED_IN,
   },
   {
     href: "/login",
     id: "login",
     text: "Login",
-    requiresAuth: false,
-    LoggedIn: true,
+    showSetting: SHOW_LOGGED_OUT,
   },
   {
     href: "/register",
     id: "register",
     text: "Register",
-    requiresAuth: false,
-    LoggedIn: true,
+    showSetting: SHOW_LOGGED_OUT,
   },
 ];
+
+export const shouldShow = (showSetting: number, user: User | null): boolean => {
+  switch (showSetting) {
+    case SHOW_ANY:
+      return true;
+    case SHOW_LOGGED_IN:
+      return Boolean(user);
+    case SHOW_LOGGED_OUT:
+      return !user;
+  }
+  throw new Error("invalid showSetting");
+};
 
 const Menu: React.FC<{}> = () => {
   const dispatch = useAppDispatch();
@@ -72,26 +81,26 @@ const Menu: React.FC<{}> = () => {
   return (
     <>
       {screenSize > ScreenSize.SM ? (
-        <div className="grid grid-cols-2">
+        <div className="grid grid-cols-1">
           <div className="font-bold space-x-4 flex justify-center">
             {sharedMenuItems.map((item, idx) =>
-              item.requiresAuth && !user ? null : (
+              shouldShow(item.showSetting, user) ? (
                 <a key={idx} id={`${item.id}-full`} href={item.href}>
                   {item.text}
                 </a>
-              )
+              ) : null
+            )}
+            {!user ? null : (
+              <button
+                type="submit"
+                id="sign-out-full"
+                className="menu-item font-bold "
+                onClick={handlesLogOut}
+              >
+                Sign Out
+              </button>
             )}
           </div>
-          {!user ? null : (
-            <button
-              type="submit"
-              id="sign-out-full"
-              className="menu-item font-bold"
-              onClick={handlesLogOut}
-            >
-              Sign Out
-            </button>
-          )}
         </div>
       ) : null}
     </>

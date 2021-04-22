@@ -5,7 +5,7 @@ import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { logout } from "../store/userSlice";
 import { connect } from "react-redux";
 import { selectUser } from "../store/userSlice";
-import { sharedMenuItems } from "./Menu";
+import { sharedMenuItems, shouldShow } from "./Menu";
 
 const MobileMenu: React.FC<{}> = () => {
   const dispatch = useAppDispatch();
@@ -25,17 +25,17 @@ const MobileMenu: React.FC<{}> = () => {
       {screenSize < ScreenSize.MD ? (
         <MenuDetails right className="bm-menu">
           {sharedMenuItems.map((item: any, idx: any) =>
-            item.requiresAuth && !user ? null : (
+            shouldShow(item.showSetting, user) ? (
               <a key={idx} id={item.id} className="menu-item" href={item.href}>
                 {item.text}
               </a>
-            )
+            ) : null
           )}
           {!user ? null : (
             <button
               type="submit"
               id="sign-out-full"
-              className="menu-item font-bold"
+              className="menu-item "
               onClick={handlesLogOut}
             >
               Sign Out
@@ -43,7 +43,6 @@ const MobileMenu: React.FC<{}> = () => {
           )}
         </MenuDetails>
       ) : null}
-      ;
     </div>
   );
 };
