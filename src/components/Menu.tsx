@@ -53,7 +53,7 @@ export const shouldShow = (showSetting: number, user: User | null): boolean => {
     case SHOW_ANY:
       return true;
     case SHOW_LOGGED_IN:
-      return Boolean(user);
+      return !!user;
     case SHOW_LOGGED_OUT:
       return !user;
   }
@@ -79,10 +79,10 @@ const Menu: React.FC<{}> = () => {
   }, [screenSize]);
 
   return (
-    <>
+    <div>
       {screenSize > ScreenSize.SM ? (
         <div className="grid grid-cols-1">
-          <div className="font-bold space-x-4 flex justify-center">
+          <div className="font-bold space-x-4 flex justify-end">
             {sharedMenuItems.map((item, idx) =>
               shouldShow(item.showSetting, user) ? (
                 <a key={idx} id={`${item.id}-full`} href={item.href}>
@@ -103,7 +103,7 @@ const Menu: React.FC<{}> = () => {
           </div>
         </div>
       ) : null}
-    </>
+    </div>
   );
 };
 export default connect()(Menu);

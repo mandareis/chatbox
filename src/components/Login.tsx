@@ -39,9 +39,12 @@ const Login: React.FC<{}> = () => {
     console.log(`Hello, ${data.user.name}`);
   };
   return (
-    <div className="flow-root flex justify-center">
+    <div>
       {user?.email}
       <form onSubmit={handlesLogin}>
+        <div className="pb-2">
+          <span className="text-xl font-bold">Sign In</span>
+        </div>
         <p>{errMessage}</p>
         <div className="my-3">
           <input
@@ -60,7 +63,7 @@ const Login: React.FC<{}> = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <div className="">
+          <div>
             <button
               type="submit"
               className="my-2 border-2 border-purple-500 hover:border-gray-500  ring-opacity-50 rounded-md text-sm w-12 py-1 focus:outline-none rounded-md"

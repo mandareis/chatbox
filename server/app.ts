@@ -95,6 +95,9 @@ function apiError(res: express.Response, message: string, status: number) {
 // PUT /users/{user_id} — update
 // DELETE /users/{user_id} — destroy
 
+//creates new user
+app.post("/api/register", async (req, body) => {});
+
 app.get("/api/users/:id", async (req, res) => {
   try {
     let user = await db.getUserByID(req.params.id);
